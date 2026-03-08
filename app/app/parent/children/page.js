@@ -4,8 +4,8 @@ import { useApp } from '@/lib/appContext'
 import { supabase } from '@/lib/supabase'
 import { getParentStudents } from '@/lib/services/users'
 import PageHeader from '@/components/PageHeader'
-import { Users, BookOpen, Calendar } from 'lucide-react'
-import { formatDate, getInitials } from '@/lib/utils'
+import { Users, BookOpen } from 'lucide-react'
+import { getInitials } from '@/lib/utils'
 
 export default function ParentChildren() {
   const { profile } = useApp()
