@@ -52,7 +52,7 @@ export default function StudentResults() {
                   <div className="flex-1">
                     <p className="font-semibold text-gray-900">{source?.title}</p>
                     <p className="text-sm text-gray-500">{sourceName} · {source?.subjects?.name} · {formatDate(r.exams?.exam_date || r.assignments?.due_date)}</p>
-                    {r.remarks && <p className="text-xs text-gray-500 mt-1 italic">"{r.remarks}"</p>}
+                    {r.remarks && <p className="text-xs text-gray-500 mt-1 italic">&ldquo;{r.remarks}&rdquo;</p>}
                   </div>
                   <div className="text-right flex-shrink-0">
                     <p className="text-lg font-bold text-gray-900">{r.score ?? '—'}<span className="text-sm text-gray-400 font-normal"> / {source?.total_marks}</span></p>

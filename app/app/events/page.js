@@ -40,13 +40,13 @@ export default function EventsPage() {
       if (editing) await updateEvent(editing.id, payload)
       else await createEvent(payload)
       setModalOpen(false); load()
-    } catch (err) { setError(err.message) }\
-    finally { setSaving(false) }\
+    } catch (err) { setError(err.message) }
+    finally { setSaving(false) }
   }
 
   const handleDelete = async (id) => {
     if (!confirm('Delete this event?')) return
-    try { await deleteEvent(id); load() } catch (err) { alert(err.message) }\
+    try { await deleteEvent(id); load() } catch (err) { alert(err.message) }
   }
 
   return (
@@ -56,4 +56,47 @@ export default function EventsPage() {
 
       {loading ? <div className="space-y-3">{[...Array(4)].map((_, i) => <div key={i} className="card p-5 h-24 animate-pulse" />)}</div>
         : events.length === 0 ? <div className="card p-12 text-center text-gray-400"><Calendar className="w-10 h-10 mx-auto mb-3 opacity-30" /><p>No events scheduled yet.</p></div>
-        : (\n          <div className="space-y-3">\n            {events.map(e => (\n              <div key={e.id} className="card p-5 flex items-start gap-4 hover:shadow-md transition-shadow">\n                <div className="w-12 h-12 bg-brand-50 rounded-lg flex items-center justify-center flex-shrink-0">\n                  <span className="text-brand-600 text-lg font-bold">{new Date(e.start_date).getDate()}</span>\n                </div>\n                <div className="flex-1">\n                  <h3 className="font-semibold text-gray-900">{e.title}</h3>\n                  <p className="text-sm text-gray-500 mt-0.5">{formatDate(e.start_date)}{e.end_date && ` - ${formatDate(e.end_date)}`}{e.location && ` \u00b7 ${e.location}`}</p>\n                  {e.description && <p className="text-sm text-gray-600 mt-1 line-clamp-2">{e.description}</p>}\n                  <p className="text-xs text-gray-400 mt-2">Category: {e.category} \u00b7 Audience: {e.audience}</p>\n                </div>\n                {canManage && (\n                  <div className="flex gap-1 flex-shrink-0">\n                    <button onClick={() => openEdit(e)} className="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors"><Pencil className="w-4 h-4" /></button>\n                    <button onClick={() => handleDelete(e.id)} className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors"><Trash2 className="w-4 h-4" /></button>\n                  </div>\n                )}\n              </div>\n            ))}\n          </div>\n        )}\n\n      <Modal open={modalOpen} onClose={() => setModalOpen(false)} title={editing ? 'Edit Event' : 'Create Event'}>\n        {error && <div className="flex items-center gap-2 bg-red-50 text-red-700 border border-red-200 rounded-lg px-3 py-2 mb-4 text-sm"><AlertCircle className="w-4 h-4" />{error}</div>}\n        <form onSubmit={handleSave} className="space-y-4">\n          <div><label className="label">Title *</label><input className="input" value={form.title} onChange={e => set('title', e.target.value)} required /></div>\n          <div><label className="label">Description</label><textarea className="input resize-none" rows={3} value={form.description} onChange={e => set('description', e.target.value)} /></div>\n          <div className="grid grid-cols-2 gap-3">\n            <div><label className="label">Start Date *</label><input className="input" type="date" value={form.start_date} onChange={e => set('start_date', e.target.value)} required /></div>\n            <div><label className="label">End Date</label><input className="input" type="date" value={form.end_date} onChange={e => set('end_date', e.target.value)} /></div>\n          </div>\n          <div><label className="label">Location</label><input className="input" value={form.location} onChange={e => set('location', e.target.value)} placeholder="e.g. School Hall, Online" /></div>\n          <div className="grid grid-cols-2 gap-3">\n            <div><label className="label">Category</label><select className="input" value={form.category} onChange={e => set('category', e.target.value)}><option value="school">School</option><option value="academic">Academic</option><option value="sport">Sport</option><option value="social">Social</option></select></div>\n            <div><label className="label">Audience</label><select className="input" value={form.audience} onChange={e => set('audience', e.target.value)}><option value="all">All</option><option value="students">Students</option><option value="parents">Parents</option><option value="teachers">Teachers</option></select></div>\n          </div>\n          <div className="flex justify-end gap-2"><button type="button" onClick={() => setModalOpen(false)} className="btn-secondary">Cancel</button><button type="submit" disabled={saving} className="btn-primary">{saving ? 'Saving...' : editing ? 'Update' : 'Create'}</button></div>\n        </form>\n      </Modal>\n    </div>\n  )\n}
+        : (
+          <div className="space-y-3">
+            {events.map(e => (
+              <div key={e.id} className="card p-5 flex items-start gap-4 hover:shadow-md transition-shadow">
+                <div className="w-12 h-12 bg-brand-50 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <span className="text-brand-600 text-lg font-bold">{new Date(e.start_date).getDate()}</span>
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-semibold text-gray-900">{e.title}</h3>
+                  <p className="text-sm text-gray-500 mt-0.5">{formatDate(e.start_date)}{e.end_date && ` - ${formatDate(e.end_date)}`}{e.location && ` · ${e.location}`}</p>
+                  {e.description && <p className="text-sm text-gray-600 mt-1 line-clamp-2">{e.description}</p>}
+                  <p className="text-xs text-gray-400 mt-2">Category: {e.category} · Audience: {e.audience}</p>
+                </div>
+                {canManage && (
+                  <div className="flex gap-1 flex-shrink-0">
+                    <button onClick={() => openEdit(e)} className="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors"><Pencil className="w-4 h-4" /></button>
+                    <button onClick={() => handleDelete(e.id)} className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors"><Trash2 className="w-4 h-4" /></button>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+
+      <Modal open={modalOpen} onClose={() => setModalOpen(false)} title={editing ? 'Edit Event' : 'Create Event'}>
+        {error && <div className="flex items-center gap-2 bg-red-50 text-red-700 border border-red-200 rounded-lg px-3 py-2 mb-4 text-sm"><AlertCircle className="w-4 h-4" />{error}</div>}
+        <form onSubmit={handleSave} className="space-y-4">
+          <div><label className="label">Title *</label><input className="input" value={form.title} onChange={e => set('title', e.target.value)} required /></div>
+          <div><label className="label">Description</label><textarea className="input resize-none" rows={3} value={form.description} onChange={e => set('description', e.target.value)} /></div>
+          <div className="grid grid-cols-2 gap-3">
+            <div><label className="label">Start Date *</label><input className="input" type="date" value={form.start_date} onChange={e => set('start_date', e.target.value)} required /></div>
+            <div><label className="label">End Date</label><input className="input" type="date" value={form.end_date} onChange={e => set('end_date', e.target.value)} /></div>
+          </div>
+          <div><label className="label">Location</label><input className="input" value={form.location} onChange={e => set('location', e.target.value)} placeholder="e.g. School Hall, Online" /></div>
+          <div className="grid grid-cols-2 gap-3">
+            <div><label className="label">Category</label><select className="input" value={form.category} onChange={e => set('category', e.target.value)}><option value="school">School</option><option value="academic">Academic</option><option value="sport">Sport</option><option value="social">Social</option></select></div>
+            <div><label className="label">Audience</label><select className="input" value={form.audience} onChange={e => set('audience', e.target.value)}><option value="all">All</option><option value="students">Students</option><option value="parents">Parents</option><option value="teachers">Teachers</option></select></div>
+          </div>
+          <div className="flex justify-end gap-2"><button type="button" onClick={() => setModalOpen(false)} className="btn-secondary">Cancel</button><button type="submit" disabled={saving} className="btn-primary">{saving ? 'Saving...' : editing ? 'Update' : 'Create'}</button></div>
+        </form>
+      </Modal>
+    </div>
+  )
+}
