@@ -6,6 +6,7 @@ import PageHeader from '@/components/PageHeader'
 import { Save, User, Lock, CheckCircle, AlertCircle } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import { getInitials } from '@/lib/utils'
+import Image from 'next/image'
 
 export default function SettingsPage() {
   const { profile, refreshProfile } = useApp()
@@ -106,7 +107,7 @@ export default function SettingsPage() {
           <form onSubmit={handleProfileSave} className="space-y-4">
             <div className="flex items-center gap-4">
               <div className="w-16 h-16 bg-brand-100 rounded-full flex items-center justify-center text-brand-700 font-bold text-xl flex-shrink-0">
-                {profileForm.avatar_url ? <img src={profileForm.avatar_url} alt="Avatar" className="w-full h-full rounded-full object-cover" /> : getInitials(profileForm.first_name, profileForm.last_name)}
+                {profileForm.avatar_url ? <Image src={profileForm.avatar_url} alt="Avatar" width={64} height={64} className="w-full h-full rounded-full object-cover" /> : getInitials(profileForm.first_name, profileForm.last_name)}
               </div>
               <div className="flex-1">
                 <label className="label">Avatar URL</label>

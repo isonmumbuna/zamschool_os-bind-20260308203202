@@ -4,7 +4,8 @@ import { useApp } from '@/lib/appContext'
 import { getMessages, sendMessage, markMessageRead } from '@/lib/services/messages'
 import { getSchoolDirectory } from '@/lib/services/profiles'
 import PageHeader from '@/components/PageHeader'
-import { Send, MessageSquare, User, X } from 'lucide-react'
+import { Send, MessageSquare, X } from 'lucide-react'
+import Image from 'next/image'
 import { formatDateTime, getInitials } from '@/lib/utils'
 
 export default function MessagesPage() {
@@ -131,7 +132,7 @@ export default function MessagesPage() {
                       className={`flex items-center gap-3 p-4 w-full text-left hover:bg-gray-50 transition-colors ${selectedRecipient?.id === partner.id ? 'bg-brand-50' : ''}`}
                     >
                       <div className="w-8 h-8 bg-brand-100 rounded-full flex items-center justify-center text-brand-700 font-bold text-xs flex-shrink-0">
-                        {partner.avatar_url ? <img src={partner.avatar_url} alt={getInitials(partner.first_name, partner.last_name)} className="w-full h-full rounded-full object-cover" /> : getInitials(partner.first_name, partner.last_name)}
+                        {partner.avatar_url ? <Image src={partner.avatar_url} alt={getInitials(partner.first_name, partner.last_name)} width={32} height={32} className="w-full h-full rounded-full object-cover" /> : getInitials(partner.first_name, partner.last_name)}
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-gray-900 truncate">{partner.first_name} {partner.last_name}</p>
@@ -157,7 +158,7 @@ export default function MessagesPage() {
             <div className="p-4 border-b border-gray-100 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 bg-brand-100 rounded-full flex items-center justify-center text-brand-700 font-bold text-sm">
-                  {selectedRecipient.avatar_url ? <img src={selectedRecipient.avatar_url} alt={getInitials(selectedRecipient.first_name, selectedRecipient.last_name)} className="w-full h-full rounded-full object-cover" /> : getInitials(selectedRecipient.first_name, selectedRecipient.last_name)}
+                  {selectedRecipient.avatar_url ? <Image src={selectedRecipient.avatar_url} alt={getInitials(selectedRecipient.first_name, selectedRecipient.last_name)} width={36} height={36} className="w-full h-full rounded-full object-cover" /> : getInitials(selectedRecipient.first_name, selectedRecipient.last_name)}
                 </div>
                 <div>
                   <h3 className="font-semibold text-gray-900">{selectedRecipient.first_name} {selectedRecipient.last_name}</h3>
